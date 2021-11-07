@@ -2,10 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WeatherHourlyRecordsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Config\ApiPlatform;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Routing\Annotation;
 
 /**
+ * @ApiResource(
+ *      normalizationContext={
+ *          "groups"={
+ *              "weather:read"
+ *          }
+ *     }
+ * )
+ *
  * @ORM\Entity(repositoryClass=WeatherHourlyRecordsRepository::class)
  */
 class WeatherHourlyRecords
@@ -18,11 +31,13 @@ class WeatherHourlyRecords
     private $id;
 
     /**
+     * @Groups ({"weather:read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $country;
 
     /**
+     * @Groups ({"weather:read"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $city;
