@@ -12,3 +12,5 @@ framework:
         routing:
             # Route your messages to the transports
             'App\Message\ReadJsonMessage': async
+            'App\Message\ReadCsvMessage': async
+
