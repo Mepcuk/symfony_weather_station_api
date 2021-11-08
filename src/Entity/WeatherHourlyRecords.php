@@ -43,16 +43,19 @@ class WeatherHourlyRecords
     private $city;
 
     /**
+     * @Groups ({"weather:read"})
      * @ORM\Column(type="datetime_immutable")
      */
     private $measure_at;
 
     /**
+     * @Groups ({"weather:read"})
      * @ORM\Column(type="float")
      */
     private $temperature;
 
     /**
+     * @Groups ({"weather:read"})
      * @ORM\Column(type="float")
      */
     private $humidity;
@@ -63,6 +66,7 @@ class WeatherHourlyRecords
     private $rain;
 
     /**
+     * @Groups ({"weather:read"})
      * @ORM\Column(type="float")
      */
     private $wind;
