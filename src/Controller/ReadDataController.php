@@ -25,7 +25,7 @@ class ReadDataController extends AbstractController
     }
 
     /**
-     * Get weather information from all jsons in ./data
+     * Get weather information from all csv in ./data
      *
      * @Route ("/get_weather_info_csv")
      */
