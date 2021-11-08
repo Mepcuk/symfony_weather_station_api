@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Action\NotFoundAction;
 
 /**
  * @ApiResource(
@@ -12,7 +13,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={
  *          "get"={"path"="/average-weather/{reportDate}"}
  *     },
- *     collectionOperations={"get"={"controller"="NotFoundAction::class"}}
+ *     collectionOperations={
+ *                      "get"={
+*                           "method"="GET",
+ *                          "controller"=NotFoundAction::class,
+ *                          "read"=false,
+ *                          "write"=false,
+ *                      },
+ *     },
  * )
  */
 
@@ -43,13 +51,7 @@ class AverageWeather
      */
     public $city;
 
-    /**
-     * @param $averageTemperature
-     * @param $averageHumidity
-     * @param $averageWind
-     * @param $reportDate
-     */
-    public function __construct(float $averageTemperature, float $averageHumidity, float $averageWind, \DateTimeInterface $reportDate)
+    public function __construct(float $averageTemperature, float $averageHumidity, float $averageWind, \DateTime $reportDate)
     {
         $this->averageTemperature   = $averageTemperature;
         $this->averageHumidity      = $averageHumidity;

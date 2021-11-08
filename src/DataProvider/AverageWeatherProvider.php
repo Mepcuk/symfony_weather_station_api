@@ -2,11 +2,14 @@
 
 namespace App\DataProvider;
 
+use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
+use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
+use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
-use App\Entity\WeatherHourlyRecords;
+use App\Entity\AverageWeather;
 use App\Repository\WeatherHourlyRecordsRepository;
 
-class AverageWeatherProvider implements \ApiPlatform\Core\DataProvider\CollectionDataProviderInterface, \ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface, \ApiPlatform\Core\DataProvider\ItemDataProviderInterface
+class AverageWeatherProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface, ItemDataProviderInterface
 {
 
     /**
@@ -31,11 +34,22 @@ class AverageWeatherProvider implements \ApiPlatform\Core\DataProvider\Collectio
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
-        return $this->weatherHourlyRecordsRepository->averageTemperature($id);
+
+        $temperature    = $this->weatherHourlyRecordsRepository->averageTemperature($id);
+        $humidity       = $this->weatherHourlyRecordsRepository->averageHumidity($id);
+        $wind           = $this->weatherHourlyRecordsRepository->averageWind($id);
+
+        return new AverageWeather(
+            $temperature[1],
+            $humidity[1],
+            $wind[1],
+            $id
+        );
+
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return $resourceClass === WeatherHourlyRecords::class;
+        return $resourceClass === AverageWeather::class;
     }
 }

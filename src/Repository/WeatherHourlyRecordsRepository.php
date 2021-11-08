@@ -37,9 +37,9 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT AVG(w.temperature) 
+            'SELECT AVG(w.humidity) 
             FROM App\Entity\WeatherHourlyRecords w
-            WHERE w.humidity >= :parameterDate'
+            WHERE w.measure_at >= :parameterDate'
         )->setParameter('parameterDate', $dateFilter);
 
         return $query->getOneOrNullResult();
@@ -50,9 +50,9 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
 
         $query = $entityManager->createQuery(
-            'SELECT AVG(w.temperature) 
+            'SELECT AVG(w.wind) 
             FROM App\Entity\WeatherHourlyRecords w
-            WHERE w.wind >= :parameterDate'
+            WHERE w.measure_at >= :parameterDate'
         )->setParameter('parameterDate', $dateFilter);
 
         return $query->getOneOrNullResult();
