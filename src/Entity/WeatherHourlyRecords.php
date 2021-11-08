@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WeatherHourlyRecordsRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +10,7 @@ use Symfony\Config\ApiPlatform;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Routing\Annotation;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
@@ -18,7 +20,7 @@ use Symfony\Component\Routing\Annotation;
  *          }
  *     }
  * )
- *
+ * @ApiFilter(SearchFilter::class, properties={"measure_at", "country", "city"})
  * @ORM\Entity(repositoryClass=WeatherHourlyRecordsRepository::class)
  */
 class WeatherHourlyRecords
