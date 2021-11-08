@@ -18,7 +18,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *          "groups"={
  *              "weather:read"
  *          }
- *     }
+ *     },
+ *    itemOperations={},
+ *     collectionOperations={
+ *                      "get"
+ *     },
  * )
  * @ApiFilter(SearchFilter::class, properties={"measure_at", "country", "city"})
  * @ORM\Entity(repositoryClass=WeatherHourlyRecordsRepository::class)
