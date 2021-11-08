@@ -19,6 +19,45 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         parent::__construct($registry, WeatherHourlyRecords::class);
     }
 
+    public function averageTemperature($dateFilter)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT AVG(w.temperature) 
+            FROM App\Entity\WeatherHourlyRecords w
+            WHERE w.measure_at >= :parameterDate'
+        )->setParameter('parameterDate', $dateFilter);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function averageHumidity($dateFilter)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT AVG(w.temperature) 
+            FROM App\Entity\WeatherHourlyRecords w
+            WHERE w.humidity >= :parameterDate'
+        )->setParameter('parameterDate', $dateFilter);
+
+        return $query->getOneOrNullResult();
+    }
+
+    public function averageWind($dateFilter)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT AVG(w.temperature) 
+            FROM App\Entity\WeatherHourlyRecords w
+            WHERE w.wind >= :parameterDate'
+        )->setParameter('parameterDate', $dateFilter);
+
+        return $query->getOneOrNullResult();
+    }
+
     // /**
     //  * @return WeatherHourlyRecords[] Returns an array of WeatherHourlyRecords objects
     //  */
