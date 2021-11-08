@@ -1,0 +1,60 @@
+TASK Description
+
+We need scientific application, which stores weather data from two weather stations.
+Both stations send you statistic once per 24 hours, ignore question of delivery - let's say files appear in ./data directory once per 24 hours.
+Each report should contain 24 records, for each hour, with weather details.
+
+
+Station 1: you receive data in .json
+files, file name YYYY-DD-MM, data:
+
+Time: unix timestamp
+Temperature: farengheit
+Humidity: percent
+Rain, inches per hour
+Wind, miles per hour
+Battery level, percent
+
+
+Station 2: you receive data in .csv
+files, file name DD-MM-YYYY, data:
+
+Time: dd:mm:yyyy, hh:mm:ss
+Temperature: celsius
+Humidity: percent
+Wind, km per hour
+Rain, mm per hour
+Light, lux
+Battery level, enum (low, medium, high, full)
+
+
+T0) Application should be able to load this data, and provide api for internal clients (i.e. no exposure to the world) to answer following questions:
+
+T1) Information about temperature, humidity and wind from station 1, for given date and time
+T2) Information about temperature, humidity and wind from station 2, for given date and time
+T3) Averaged information about temperature, humidity and wind from both stations, for given date
+T4) Last available date/time
+
+T5) Application should write it's activity to the log file(s), logging level should be enough to understand app activities
+
+
+Application should be done with those in mind (development not required, but architecture should mind this):
+
+D1) Multiple stations of both types can be added later
+D2) API could be exposed to the world for external clients, i.e. authorization will required
+D3) Weather stations in future could be located in different cities, and averaged info will be required for defined city
+D4) API could be extended no return more data positions
+
+
+Solution:
+
+T0 API platform exposed to /api and not exposed to world - allowed IP is 127.0.0.1 - for change please follow config/packages/security.yaml
+T1-T2 solved by ORM entity with correct option in Api Resource
+T3-T4 solved by non-persistant entity with calculated field. To adjust calculation please follow DataProvider folder.
+
+Activity Log written only for API calls, for API write will be similar. Added user for future -
+//TODO need type relation however i did not have users and authorization
+Activity for write into DB not record - too simple...
+
+D1, D3 solved add country, city in entity and added ApiFilter with following parameters
+D2 possible to add authorization
