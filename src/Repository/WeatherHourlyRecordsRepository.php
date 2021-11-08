@@ -58,6 +58,18 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    public function lastUpdateDatetime()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT MAX(w.measure_at) 
+            FROM App\Entity\WeatherHourlyRecords w'
+        );
+
+        return $query->getOneOrNullResult();
+    }
+
     // /**
     //  * @return WeatherHourlyRecords[] Returns an array of WeatherHourlyRecords objects
     //  */

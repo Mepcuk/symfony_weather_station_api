@@ -21,7 +21,10 @@ class LastUpdateProvider implements CollectionDataProviderInterface, RestrictedD
 
     public function getCollection(string $resourceClass, string $operationName = null)
     {
-        // TODO: Implement getCollection() method.
+        $lastUpdatedDatetime                = $this->weatherHourlyRecordsRepository->lastUpdateDatetime();
+        $hydraMember['lastUpdatedDatetime'] = $lastUpdatedDatetime[1];
+
+        return [ $hydraMember ];
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
