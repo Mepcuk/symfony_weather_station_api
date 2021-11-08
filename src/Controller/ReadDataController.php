@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Message\ReadCsvMessage;
 use App\Message\ReadJsonMessage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,5 +22,18 @@ class ReadDataController extends AbstractController
         $messageBus->dispatch($getMessage);
 
         return new Response('Queue added read from json - weather information', 201);
+    }
+
+    /**
+     * Get weather information from all jsons in ./data
+     *
+     * @Route ("/get_weather_info_csv")
+     */
+    public function getWeatherCsv(MessageBusInterface $messageBus)
+    {
+        $getMessage = new ReadCsvMessage('./../data');
+        $messageBus->dispatch($getMessage);
+
+        return new Response('Queue added read from Csv - weather information', 201);
     }
 }
