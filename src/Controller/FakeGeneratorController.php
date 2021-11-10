@@ -46,8 +46,16 @@ class FakeGeneratorController extends AbstractController
      */
     public function generateFakeWeatherCsv(string $startDate = '07-11-2021')
     {
-        $dailyWeather   = [];
         $batteryLevel   = ['low', 'medium', 'high', 'full'];
+        $dailyWeather   = [[
+            "Time"          => "measureAt" ,
+            "Temperature"   => "temperature",
+            "Humidity"      => "humidity",
+            "Rain"          => "rain",
+            "Wind"          => "wind",
+            "Lux"           => "light",
+            "Battery"       => "batteryLevel",
+        ]];
 
         for ( $hour = 0; $hour < 24; $hour++) {
 

@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WeatherHourlyRecordsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Config\ApiPlatform;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -52,7 +54,7 @@ class WeatherHourlyRecords
      * @Groups ({"weather:read"})
      * @ORM\Column(type="datetime_immutable")
      */
-    private $measure_at;
+    private $measureAt;
 
     /**
      * @Groups ({"weather:read"})
@@ -86,6 +88,10 @@ class WeatherHourlyRecords
      * @ORM\Column(type="string", length=255)
      */
     private $batteryLevel;
+    /**
+     * @var Container
+     */
+
 
     public function getId(): ?int
     {
@@ -121,9 +127,9 @@ class WeatherHourlyRecords
         return $this->measure_at;
     }
 
-    public function setMeasureAt(\DateTimeImmutable $measure_at): self
+    public function setMeasureAt(\DateTimeImmutable $measureAt): self
     {
-        $this->measure_at = $measure_at;
+        $this->measureAt = $measureAt;
 
         return $this;
     }

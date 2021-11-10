@@ -7,6 +7,8 @@ use App\Controller\MeasureUnitConverterController;
 use App\Entity\WeatherHourlyRecords;
 use App\Message\ReadJsonMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class ReadJsonMessageHandler implements MessageHandlerInterface
@@ -15,10 +17,15 @@ class ReadJsonMessageHandler implements MessageHandlerInterface
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
+        $this->container        = $container;
     }
 
     /**

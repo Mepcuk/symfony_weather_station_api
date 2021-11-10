@@ -3,10 +3,19 @@
 namespace App\MessageHandler;
 
 use App\Controller\FilenameParserController;
+use App\Controller\Serializer\WeatherDataNormalizer;
 use App\Entity\WeatherHourlyRecords;
 use App\Message\ReadCsvMessage;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ReadCsvMessageHandler implements MessageHandlerInterface
 {
@@ -14,10 +23,25 @@ class ReadCsvMessageHandler implements MessageHandlerInterface
      * @var EntityManagerInterface
      */
     private $entityManager;
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+    /**
+     * @var ObjectNormalizer
+     */
+    private $objectNormalizer;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer, ContainerInterface $container, ObjectNormalizer $objectNormalizer)
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
+        $this->serializer       = $serializer;
+        $this->container        = $container;
+        $this->objectNormalizer = $objectNormalizer;
     }
 
     public function __invoke(ReadCsvMessage $readCsvMessage)
@@ -29,35 +53,23 @@ class ReadCsvMessageHandler implements MessageHandlerInterface
         foreach ( $csvFiles as $csvFile ) {
 
             $filenameParser     = new FilenameParserController();
-            $arrayCountyCity    = $filenameParser->getWeatherStationCityAndCountry($csvFile);
+            $arrayCountryCity   = $filenameParser->getWeatherStationCityAndCountry($csvFile);
+            $usWeatherFormat    = $filenameParser->getUsWeatherFormat($csvFile);
 
-            if ( is_array($arrayCountyCity) && key_exists('country', $arrayCountyCity) && key_exists('city', $arrayCountyCity) ) {
+            if ( is_array($arrayCountryCity) && key_exists('country', $arrayCountryCity) && key_exists('city', $arrayCountryCity) ) {
 
-                $weatherStationCountry      = $arrayCountyCity['country'];
-                $weatherStationCity         = $arrayCountyCity['city'];
+                $encoders                   = [new CsvEncoder(), new JsonEncode()];
+                $normalizers                = [new WeatherDataNormalizer($this->objectNormalizer)];
+                $serializer                 = new Serializer($normalizers, $encoders);
 
-                if ( ($handle = fopen($readDirectory. '/' . $csvFile, "r")) !== FALSE ) {
-                    while ( ($data = fgetcsv($handle, 1000, ",")) !== FALSE ) {
+                $contentCsv                 = file_get_contents($readDirectory. '/' . $csvFile);
+                /** @var WeatherHourlyRecords $weatherRecords */
+                $weatherRecords             = $serializer->deserialize($contentCsv, WeatherHourlyRecords::class . '[]', 'csv', ['csv_delimiter' => ',', 'csv_headers' => ['measureAt', 'temperature', 'humidity', 'rain', 'wind', 'light', 'batteryLevel'], 'country' => $arrayCountryCity['country'], 'city' => $arrayCountryCity['city'], 'weatherFormat' => $usWeatherFormat ]);
 
-                        if ( count($data) == 7 ) {
-
-                            $weatherRecord = new WeatherHourlyRecords();
-                            $weatherRecord->setMeasureAt(\DateTimeImmutable::createFromFormat("d-m-Y H:i:s", $data[0]));
-                            $weatherRecord->setCountry($weatherStationCountry);
-                            $weatherRecord->setCity($weatherStationCity);
-                            $weatherRecord->setTemperature($data[1]);
-                            $weatherRecord->setHumidity($data[2]);
-                            $weatherRecord->setRain( $data[3]);
-                            $weatherRecord->setWind( $data[4]);
-                            $weatherRecord->setLight($data[5]);
-                            $weatherRecord->setBatteryLevel( $data[6]);
-
-                            $this->entityManager->persist($weatherRecord);
-                            $this->entityManager->flush();
-                        }
-                    }
-                    fclose($handle);
+                foreach ( $weatherRecords as $weatherRecord) {
+                    $this->entityManager->persist($weatherRecord);
                 }
+                $this->entityManager->flush();
             }
         }
     }
