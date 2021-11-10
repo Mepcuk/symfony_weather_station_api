@@ -44,8 +44,6 @@ class FilenameParserController
             $date = explode('-', $filename[1]);
             if ( is_array($date) ) {
                 return strlen($date[0]) == 4;
-            } else {
-                return new \Exception('Filename format is not valid');
             }
         }
 

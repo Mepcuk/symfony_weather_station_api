@@ -7,11 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WeatherHourlyRecordsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Config\ApiPlatform;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
-use Symfony\Component\Routing\Annotation;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
@@ -98,11 +94,6 @@ class WeatherHourlyRecords
         return $this->id;
     }
 
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
     public function setCountry(?string $country): self
     {
         $this->country = $country;
@@ -124,7 +115,7 @@ class WeatherHourlyRecords
 
     public function getMeasureAt(): ?\DateTimeImmutable
     {
-        return $this->measure_at;
+        return $this->measureAt;
     }
 
     public function setMeasureAt(\DateTimeImmutable $measureAt): self
@@ -146,11 +137,6 @@ class WeatherHourlyRecords
         return $this;
     }
 
-    public function getHumidity(): ?float
-    {
-        return $this->humidity;
-    }
-
     public function setHumidity(float $humidity): self
     {
         $this->humidity = $humidity;
@@ -158,10 +144,6 @@ class WeatherHourlyRecords
         return $this;
     }
 
-    public function getRain(): ?float
-    {
-        return $this->rain;
-    }
 
     public function setRain(float $rain): self
     {
@@ -170,10 +152,6 @@ class WeatherHourlyRecords
         return $this;
     }
 
-    public function getWind(): ?float
-    {
-        return $this->wind;
-    }
 
     public function setWind(float $wind): self
     {
@@ -192,11 +170,6 @@ class WeatherHourlyRecords
         $this->light = $light;
 
         return $this;
-    }
-
-    public function getBatteryLevel(): ?string
-    {
-        return $this->batteryLevel;
     }
 
     public function setBatteryLevel(string $batteryLevel): self

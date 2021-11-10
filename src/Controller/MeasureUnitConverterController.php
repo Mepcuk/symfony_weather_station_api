@@ -34,7 +34,7 @@ class MeasureUnitConverterController
      * @param float $mileValue
      * @return float
      */
-    public function convertMilesToKm(float $mileValue)
+    public function convertMilesToKm(float $mileValue): float
     {
         return round( $mileValue * 1.609, 5);
     }

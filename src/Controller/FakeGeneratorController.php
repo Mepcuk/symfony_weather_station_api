@@ -14,7 +14,7 @@ class FakeGeneratorController extends AbstractController
      * @Route("/generate_fake_json")
      */
 
-    public function generateFakeWeatherJson(int $unixStartDatetime = 1636236000)
+    public function generateFakeWeatherJson(int $unixStartDatetime = 1636236000): JsonResponse
     {
         $weather    = [];
 
@@ -44,7 +44,7 @@ class FakeGeneratorController extends AbstractController
      *
      * @Route("/generate_fake_csv")
      */
-    public function generateFakeWeatherCsv(string $startDate = '07-11-2021')
+    public function generateFakeWeatherCsv(string $startDate = '07-11-2021'): JsonResponse
     {
         $batteryLevel   = ['low', 'medium', 'high', 'full'];
         $dailyWeather   = [[

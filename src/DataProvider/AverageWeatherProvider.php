@@ -5,7 +5,6 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
 use App\Entity\AverageWeather;
 use App\Repository\WeatherHourlyRecordsRepository;
 
@@ -22,7 +21,7 @@ class AverageWeatherProvider implements CollectionDataProviderInterface, Restric
         $this->weatherHourlyRecordsRepository = $weatherHourlyRecordsRepository;
     }
 
-    public function getCollection(string $resourceClass, string $operationName = null)
+    public function getCollection(string $resourceClass, string $operationName = null): array
     {
         /*
          * TODO maybe will be need in future get collection - in repository does not have method - just hardcoded
@@ -32,7 +31,7 @@ class AverageWeatherProvider implements CollectionDataProviderInterface, Restric
         return [$averageTemperature];
     }
 
-    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
+    public function getItem(string $resourceClass, $id, string $operationName = null, array $context = []): AverageWeather
     {
 
         $temperature    = $this->weatherHourlyRecordsRepository->averageTemperature($id);

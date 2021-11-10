@@ -16,7 +16,7 @@ class ReadDataController extends AbstractController
      *
      * @Route ("/get_weather_info_json")
      */
-    public function getWeatherJson(MessageBusInterface $messageBus)
+    public function getWeatherJson(MessageBusInterface $messageBus): Response
     {
         $getMessage = new ReadJsonMessage('./../data');
         $messageBus->dispatch($getMessage);
@@ -29,7 +29,7 @@ class ReadDataController extends AbstractController
      *
      * @Route ("/get_weather_info_csv")
      */
-    public function getWeatherCsv(MessageBusInterface $messageBus)
+    public function getWeatherCsv(MessageBusInterface $messageBus): Response
     {
         $getMessage = new ReadCsvMessage('./../data');
         $messageBus->dispatch($getMessage);

@@ -19,6 +19,9 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         parent::__construct($registry, WeatherHourlyRecords::class);
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function averageTemperature($dateFilter)
     {
         $entityManager = $this->getEntityManager();
@@ -32,6 +35,9 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function averageHumidity($dateFilter)
     {
         $entityManager = $this->getEntityManager();
@@ -45,6 +51,9 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function averageWind($dateFilter)
     {
         $entityManager = $this->getEntityManager();
@@ -58,6 +67,9 @@ class WeatherHourlyRecordsRepository extends ServiceEntityRepository
         return $query->getOneOrNullResult();
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function lastUpdateDatetime()
     {
         $entityManager = $this->getEntityManager();

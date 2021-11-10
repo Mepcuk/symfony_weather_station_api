@@ -7,15 +7,12 @@ use App\Controller\Serializer\WeatherDataNormalizer;
 use App\Entity\WeatherHourlyRecords;
 use App\Message\ReadCsvMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
+
 
 class ReadCsvMessageHandler implements MessageHandlerInterface
 {
@@ -23,24 +20,15 @@ class ReadCsvMessageHandler implements MessageHandlerInterface
      * @var EntityManagerInterface
      */
     private $entityManager;
-    /**
-     * @var SerializerInterface
-     */
-    private $serializer;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+
     /**
      * @var ObjectNormalizer
      */
     private $objectNormalizer;
 
-    public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer, ContainerInterface $container, ObjectNormalizer $objectNormalizer)
+    public function __construct(EntityManagerInterface $entityManager, ObjectNormalizer $objectNormalizer)
     {
         $this->entityManager    = $entityManager;
-        $this->serializer       = $serializer;
-        $this->container        = $container;
         $this->objectNormalizer = $objectNormalizer;
     }
 
