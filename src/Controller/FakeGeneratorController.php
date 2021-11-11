@@ -33,7 +33,7 @@ class FakeGeneratorController extends AbstractController
         }
 
         $json       = json_encode($weather);
-        $filename   = sprintf('../data/us_boston %s.json', gmdate("d-m-Y", $unixStartDatetime));
+        $filename   = sprintf('../data/us_boston %s.json', gmdate("Y-m-d", $unixStartDatetime));
         $file       = file_put_contents($filename, $json);
 
         return new JsonResponse($json);
