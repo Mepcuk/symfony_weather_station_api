@@ -28,7 +28,7 @@ class WeatherDataNormalizer implements ContextAwareDenormalizerInterface
                     }
 
                     $weatherHourlyRecord->setCountry($context['country']);
-                    $weatherHourlyRecord->setCity($context['country']);
+                    $weatherHourlyRecord->setCity($context['city']);
                     $weatherData[] = $weatherHourlyRecord;
                 }
             }
