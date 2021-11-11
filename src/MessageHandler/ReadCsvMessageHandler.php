@@ -3,7 +3,7 @@
 namespace App\MessageHandler;
 
 use App\Controller\FilenameParserController;
-use App\Controller\Serializer\WeatherDataNormalizer;
+use App\Serializer\WeatherDataNormalizer;
 use App\Entity\WeatherHourlyRecords;
 use App\Message\ReadCsvMessage;
 use Doctrine\ORM\EntityManagerInterface;

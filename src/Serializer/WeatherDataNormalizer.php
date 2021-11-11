@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Serializer;
+namespace App\Serializer;
 
 use App\Entity\WeatherHourlyRecords;
 use Symfony\Component\Serializer\Normalizer\ContextAwareDenormalizerInterface;
