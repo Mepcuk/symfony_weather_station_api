@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use  ApiPlatform\Core\Action\NotFoundAction;
 
 /**
  * @ApiResource(
@@ -17,7 +18,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "weather:read"
  *          }
  *     },
- *    itemOperations={},
+ *     itemOperations={
+ *         "get"={
+ *             "method"="GET",
+ *             "controller"=NotFoundAction::class,
+ *             "read"=false,
+ *             "output"=false,
+ *         },
+ *     },
  *     collectionOperations={
  *                      "get"
  *     },
